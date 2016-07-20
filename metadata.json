@@ -1,6 +1,6 @@
 {
   "name":         "PhilFriderici-gnomish",
-  "version":      "1.0.0",
+  "version":      "1.0.1",
   "author":       "Phil-Friderici",
   "summary":      "manage gnome and mate desktop",
   "description":  "manage gnome and mate desktop settings and application icons",
@@ -38,19 +38,11 @@
   "requirements": [
     {
       "name": "pe",
-      "version_requirement": ">= 3.2.0 < 4.0.0"
-    },
-    {
-      "name": "pe",
-      "version_requirement": ">= 4.1.0 < 5.0.0"
+      "version_requirement": ">= 3.2.0 < 5.0.0"
     },
     {
       "name": "puppet",
-      "version_requirement": ">= 3.0.0 < 4.0.0"
-    },
-    {
-      "name": "puppet",
-      "version_requirement": ">= 4.1.0 < 5.0.0"
+      "version_requirement": ">= 3.0.0 < 5.0.0"
     }
   ],
   "dependencies": [
