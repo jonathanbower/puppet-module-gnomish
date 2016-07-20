@@ -1,0 +1,44 @@
+---
+# Gnome/Mate unspecific
+gnomish::applications:
+  'from_hiera_class':
+    ensure:           'file'
+    entry_categories: 'from_hiera'
+    entry_exec:       'exec'
+    entry_icon:       'icon'
+
+gnomish::settings_xml:
+  'from_hiera_class':
+    key:    '/rspec_from_hiera_class'
+    value:  'test'
+    config: 'mandatory'
+
+
+# Gnome specific
+gnomish::gnome::applications:
+  'from_hiera_class_gnome_specific':
+    ensure:           'file'
+    entry_categories: 'from_hiera'
+    entry_exec:       'exec'
+    entry_icon:       'icon'
+
+gnomish::gnome::settings_xml:
+  'from_hiera_class_gnome_specific':
+    key:    '/rspec_from_hiera_class_mate_specific'
+    value:  'test'
+    config: 'mandatory'
+
+
+# Mate specific
+gnomish::mate::applications:
+  'from_hiera_class_mate_specific':
+    ensure:           'file'
+    entry_categories: 'from_hiera'
+    entry_exec:       'exec'
+    entry_icon:       'icon'
+
+gnomish::mate::settings_xml:
+  'from_hiera_class_mate_specific':
+    key:    '/rspec_from_hiera_class_mate_specific'
+    value:  'test'
+    config: 'mandatory'

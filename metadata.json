@@ -1,0 +1,59 @@
+{
+  "name":         "PhilFriderici-gnomish",
+  "version":      "1.0.0",
+  "author":       "Phil-Friderici",
+  "summary":      "manage gnome and mate desktop",
+  "description":  "manage gnome and mate desktop settings and application icons",
+  "license":      "Apache-2.0",
+  "source":       "https://github.com/Phil-Friderici/puppet-module-gnomish.git",
+  "project_page": "https://github.com/Phil-Friderici/puppet-module-gnomish",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "SLED",
+      "operatingsystemrelease": [
+        "11"
+      ]
+    },
+    {
+      "operatingsystem": "SLES",
+      "operatingsystemrelease": [
+        "11"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "pe",
+      "version_requirement": ">= 3.2.0 < 4.0.0"
+    },
+    {
+      "name": "pe",
+      "version_requirement": ">= 4.1.0 < 5.0.0"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": ">= 3.0.0 < 4.0.0"
+    },
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.1.0 < 5.0.0"
+    }
+  ],
+  "dependencies": [
+    {"name":"puppetlabs/stdlib","version_requirement":">= 4.9.0 < 6.0.0"}
+  ]
+}
