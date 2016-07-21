@@ -1,9 +1,9 @@
 {
   "name":         "PhilFriderici-gnomish",
-  "version":      "1.0.2",
+  "version":      "1.0.3",
   "author":       "Phil-Friderici",
-  "summary":      "manage gnome and mate desktop",
-  "description":  "manage gnome and mate desktop settings and application icons",
+  "summary":      "Manage Gnome 2.x & Mate 1.x Desktop application icons and setting",
+  "description":  "Manage Gnome 2.x & Mate 1.x Desktop application icons and settings",
   "license":      "Apache-2.0",
   "source":       "https://github.com/Phil-Friderici/puppet-module-gnomish.git",
   "project_page": "https://github.com/Phil-Friderici/puppet-module-gnomish",

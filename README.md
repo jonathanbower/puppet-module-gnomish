@@ -15,13 +15,13 @@
 
 # Module description
 
-Manage Gnome & Mate Desktop application icons and settings.
+Manage Gnome 2.x & Mate 1.x Desktop application icons and settings.
 
-With this module you can create, modify and remove applications in the desktop menus. You can set system settings, deploy and
-set a wallpaper and manage packages. You are able to decide if icons and settings are applied to Gnome or Mate only, or to both
+With this module you can create, modify, and remove applications in the desktop menus. You can set system settings, deploy and
+set a wallpaper, and manage packages. You are able to decide if icons and settings are applied to Gnome or Mate only, or to both
 desktops.
 
-This module was developed with a focus of using hiera to pass parameters to it. Though it can be used without hiera.
+This module was developed with a focus of using hiera to pass parameters to it. Still it can be used without hiera.
 
 If you want to rollout an application icon to both desktops, use `$gnomish::applications`. If it should only end up on Gnome use
 `$gnomish::gnome::applications`, for Mate only `$gnomish::mate::applications` is your friend.
@@ -45,8 +45,8 @@ The same is possible with system settings. Use `$gnomish::settings_xml` for both
 This module has been tested to work on the following systems with Puppet v3 (with and without the future parser)
 and Puppet v4 (with strict variables) using Ruby versions 1.8.7 (Puppet v3 only), 1.9.3, 2.0.0 and 2.1.0.
 
-  * EL 6
-  * EL 7
+  * RHEL 6
+  * RHEL 7
   * SLED 11
   * SLES 11
 
@@ -59,13 +59,13 @@ and Puppet v4 (with strict variables) using Ruby versions 1.8.7 (Puppet v3 only)
 ### Description
 
 The `gnomish` class is used to configure application icons and settings that are valid for both desktops.
-Besides that, you can also manage wallpaper, packages and which file to be used to save user settings.
+Besides that, you can also manage wallpaper, packages, and which file to be used to save user settings.
 
 ### Parameters
 
 ---
 #### applications (hash / optional)
-Specify applications icons that will be passed to the gnomish::applications defined type. For a full description, please read
+Specify applications icons that will be passed to the gnomish::applications defined type. For a full description please read
 on at the [application defined type](#defined-type-gnomishapplication).
 
 **Hint**: if you want to pass parameters from manifests, you will need to set `$gnomish::applications_hiera_merge` to *false*.
@@ -99,7 +99,7 @@ include the subclass `gnomish::gnome` or `gnomish::mate`.
 
 ---
 #### gconf_name (string / optional)
-This setting allows you to define system wide which file should be used to save user settings. With this you can completely separate
+This setting allows you to define system-wide which file should be used to save user settings. With this you can completely separate
 the settings between desktops and even OS families to avoid spillover effects.
 
 - Default: ***undef***
@@ -133,7 +133,7 @@ gnomish::packages_remove:
 ---
 #### settings_xml (hash / optional)
 Specify desktop settings that will be passed to the `gnomish::gnome::gconftool_2` or `gnomish::mate::mateconftool_2` defined
-types, depending on the value of `$gnomish::desktop`. For a full description, please read on at the
+types, depending on the value of `$gnomish::desktop`. For a full description please read on at the
 [gconftool_2](#defined-type-gnomishgconftool_2) or [mateconftools_2](#defined-type-gnomishmateconftool_2) defined types.
 
 **Hint**: if you want to pass parameters from manifests you will need to set `$settings_xml_hiera_merge` to *false*.
@@ -186,7 +186,7 @@ you can manage the system items menu file.
 
 ---
 #### applications (hash / optional)
-Specify applications icons that will be passed to the gnomish::applications defined type. For a full description, please read
+Specify applications icons that will be passed to the gnomish::applications defined type. For a full description please read
 on at the [application defined type](#defined-type-gnomishapplication).
 
 **Hint**: if you want to pass parameters from manifests, you will need to set `$gnomish::gnome::applications_hiera_merge` to *false*.
@@ -222,7 +222,7 @@ If set to *true* hiera_merge will be used to collect and concatenate application
 
 ---
 #### settings_xml (hash / optional)
-Specify desktop settings that will be passed to the `gnomish::gnome::gconftool_2` defined type. For a full description, please
+Specify desktop settings that will be passed to the `gnomish::gnome::gconftool_2` defined type. For a full description please
 read on at the [mateconftools_2](#defined-type-gnomishmateconftool_2) defined type.
 
 
@@ -255,7 +255,7 @@ The module delivers an example for SLE11 with a typical reduction useful for ter
 
 ---
 #### system_items_path (string / optional)
-Specify an absolute path to the system-itmes.xbel file which should get managed.
+Specify an absolute path to the system-items.xbel file which should get managed.
 
 **Hint**: if you want to pass parameters from manifests you will need to set `$settings_xml_hiera_merge` to *false*.
 
@@ -279,7 +279,7 @@ The `gnomish::mate` class is used to configure application icons and settings th
 ### Parameters
 ---
 #### applications (hash / optional)
-Specify applications icons that will be passed to the gnomish::applications defined type. For a full description, please read
+Specify applications icons that will be passed to the gnomish::applications defined type. For a full description please read
 on at the [application defined type](#defined-type-gnomishapplication).
 
 **Hint**: if you want to pass parameters from manifests, you will need to set `$gnomish::mate::applications_hiera_merge` to *false*.
@@ -315,7 +315,7 @@ If set to *true* hiera_merge will be used to collect and concatenate application
 
 ---
 #### settings_xml (hash / optional)
-Specify desktop settings that will be passed to the `gnomish::mate::mateconftool_2` defined type. For a full description, please
+Specify desktop settings that will be passed to the `gnomish::mate::mateconftool_2` defined type. For a full description please
 read on at the [mateconftools_2](#defined-type-gnomishmateconftool_2) defined type.
 
 
