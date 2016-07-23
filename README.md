@@ -509,6 +509,10 @@ to one of the other valid values of *bool*, *int*, *float* or *string*.
 ---
 # Changelog
 
+* 1.0.4 enhance type detection and value conversation
+  * Stringified booleans, integers, and floats in $value are now detected precisely if type is not manually set  
+  * Stringified booleans, integers, and floats in $value are now correctly converted to strings
+  * Fix links in docs, add changelog section
 * 1.0.3 Enhance spelling in docs
 * 1.0.2 Add tags in metadata
 * 1.0.1 Fix supported Puppet versions in metadata
