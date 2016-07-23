@@ -12,6 +12,7 @@
     * [gnomish::application](#defined-type-gnomishapplication)
     * [gnomish::gnome::gconftool_2](#defined-type-gnomishgnomegconftool_2)
     * [gnomish::mate::mateconftool_2](#defined-type-gnomishmatemateconftool_2)
+5. [Changelog](#changelog)
 
 # Module description
 
@@ -134,7 +135,7 @@ gnomish::packages_remove:
 #### settings_xml (hash / optional)
 Specify desktop settings that will be passed to the `gnomish::gnome::gconftool_2` or `gnomish::mate::mateconftool_2` defined
 types, depending on the value of `$gnomish::desktop`. For a full description please read on at the
-[gconftool_2](#defined-type-gnomishgconftool_2) or [mateconftools_2](#defined-type-gnomishmateconftool_2) defined types.
+[gconftool_2](#defined-type-gnomishgnomegconftool_2) or [mateconftools_2](#defined-type-gnomishmatemateconftool_2) defined types.
 
 **Hint**: if you want to pass parameters from manifests you will need to set `$settings_xml_hiera_merge` to *false*.
 
@@ -223,7 +224,7 @@ If set to *true* hiera_merge will be used to collect and concatenate application
 ---
 #### settings_xml (hash / optional)
 Specify desktop settings that will be passed to the `gnomish::gnome::gconftool_2` defined type. For a full description please
-read on at the [mateconftools_2](#defined-type-gnomishmateconftool_2) defined type.
+read on at the [gconftools_2](#defined-type-gnomishgnomegconftool_2) defined type.
 
 
 **Hint**: if you want to pass parameters from manifests you will need to set `$settings_xml_hiera_merge` to *false*.
@@ -316,7 +317,7 @@ If set to *true* hiera_merge will be used to collect and concatenate application
 ---
 #### settings_xml (hash / optional)
 Specify desktop settings that will be passed to the `gnomish::mate::mateconftool_2` defined type. For a full description please
-read on at the [mateconftools_2](#defined-type-gnomishmateconftool_2) defined type.
+read on at the [mateconftools_2](#defined-type-gnomishmatemateconftool_2) defined type.
 
 
 **Hint**: if you want to pass parameters from manifests you will need to set `$settings_xml_hiera_merge` to *false*.
@@ -493,7 +494,8 @@ please specify the complete absolute path for it.
 ---
 #### key (string / optional)
 To specify which key you want to manage. If not explicitly set, it will use the resource title you have chosen while calling the
-defined type. See the [example](#example-for-gnome-only-settings) above for an example of both ways to pass the key name.
+defined type. See the [example](#example-for-hashed-settings_xml-resources-in-hiera) above for an example of both ways to pass the
+key name.
 
 - Default: ***$title***
 
@@ -505,3 +507,9 @@ to one of the other valid values of *bool*, *int*, *float* or *string*.
 - Default: ***'auto'***
 
 ---
+# Changelog
+
+* 1.0.3 Enhance spelling in docs
+* 1.0.2 Add tags in metadata
+* 1.0.1 Fix supported Puppet versions in metadata
+* 1.0.0 Initial release

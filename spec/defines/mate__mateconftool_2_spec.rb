@@ -75,15 +75,15 @@ describe 'gnomish::mate::mateconftool_2' do
   end
 
   auto_types = {
-    'bool'   => [true, false],
-    'int'    => [3],
-    'float'  => [2.42],
+    'bool'   => ['true', true, 'false', false],
+    'int'    => ['3', 3],
+    'float'  => ['2.42', 2.42],
     'string' => %w(string),
   }
 
   auto_types.each do |type, values|
     values.each do |value|
-      describe "with value set to valid <#{value}> (as #{value.class})" do
+      describe "with type on default <auto> and value set to valid <#{value}> (as #{value.class})" do
         let(:params) { { :value => value } }
 
         it do
@@ -124,13 +124,13 @@ describe 'gnomish::mate::mateconftool_2' do
       },
       'stringified' => {
         :name    => %w(value),
-        :valid   => ['string', %w(array), { 'ha' => 'sh' }, 3, 2.42, true, false],
-        :invalid => [],
+        :valid   => ['string', 3, 2.42, true, false],
+        :invalid => [%w(array), { 'ha' => 'sh' }],
         :message => 'is not a string',
       },
-      'regex desktop' => {
+      'regex type' => {
         :name    => %w(type),
-        :valid   => %w(auto bool boolean int integer float string),
+        :valid   => %w(auto bool int float string),
         :invalid => [%w(array), { 'ha' => 'sh' }, 3, 2.42, true, false],
         :message => 'gnomish::mate::mateconftool_2::type must be one of <bool>, <int>, <float>, <string> or <auto> and is set to',
       },
