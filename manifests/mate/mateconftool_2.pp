@@ -6,13 +6,34 @@ define gnomish::mate::mateconftool_2 (
 ) {
 
   # variable preparation
-  if $type == 'auto' {
-    $type_real = type3x($value) ? {
-      'boolean' => 'bool',
-      'integer' => 'int',
-      'float'   => 'float',
-      default   => 'string',
+  case type3x($value) {
+    'boolean':         {
+      $value_string = bool2str($value)
+      $value_type = 'bool'
     }
+    'integer': {
+      $value_string = sprintf('%g', $value)
+      $value_type = 'int'
+    }
+    'float': {
+      $value_string = sprintf('%g', $value)
+      $value_type = 'float'
+    }
+    'string': {
+      if $value =~ /^(true|false)$/ {
+        $value_string = $value
+        $value_type = 'bool'
+      }
+      else {
+        $value_string = $value
+        $value_type = 'string'
+      }
+    }
+    default: { fail('gnomish::gnome::gconftool_2::value is not a string.') }
+  }
+
+  if $type == 'auto' {
+    $type_real = $value_type
   }
   else {
     $type_real = $type
@@ -24,15 +45,13 @@ define gnomish::mate::mateconftool_2 (
     default     => $config,
   }
 
-  $value_string = "${value}" # lint:ignore:only_variable_string
-
   # variable validation
   validate_string($value_string)
   validate_absolute_path($config_real)
   if is_string($key) == false {
     fail('gnomish::mate::mateconftool_2::key is not a string.')
   }
-  validate_re($type_real, '^(bool|int|float|string)', "gnomish::mate::mateconftool_2::type must be one of <bool>, <int>, <float>, <string> or <auto> and is set to ${type_real}")
+  validate_re($type_real, '^(bool|int|float|string)$', "gnomish::mate::mateconftool_2::type must be one of <bool>, <int>, <float>, <string> or <auto> and is set to ${type_real}")
 
   # functionality
   exec { "mateconftool-2 ${key}" :
