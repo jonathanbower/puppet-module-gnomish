@@ -14,6 +14,7 @@ end
 
 def mandatory_global_facts
   {
-    :path => '/spec/test:/path',
+    :class => nil,               # used in hiera
+    :path => '/spec/test:/path', # used in gnomish::gnome::gconftool_2 / gnomish::mate::mateconftool_2
   }
 end
