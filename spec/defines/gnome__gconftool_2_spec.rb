@@ -1,27 +1,28 @@
 require 'spec_helper'
 describe 'gnomish::gnome::gconftool_2' do
+  mandatory_params = {
+    :value => 'value'
+  }
   let(:title) { '/gnomish/rspec' }
-  let :mandatory_params do
-    {
-      :value => 'value'
-    }
-  end
+  let(:facts) { mandatory_global_facts }
+  let(:params) { mandatory_params }
 
   describe 'with defaults for all parameters' do
+    let(:params) { {} }
     it 'should fail' do
       expect { should contain_class(subject) }.to raise_error(Puppet::Error, /(expects a value for|Must pass value to)/)
     end
   end
 
   describe 'with value set to valid string <testing>' do
-    let(:params) { { :value => 'testing' } }
+    let(:params) { mandatory_params.merge({ :value => 'testing' }) }
     it { should compile.with_all_deps }
 
     it do
       should contain_exec('gconftool-2 /gnomish/rspec').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --set \'/gnomish/rspec\' --type string \'testing\'',
         'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --get /gnomish/rspec 2>&1 )" == "testing"',
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin',
+        'path'    => '/spec/test:/path',
       })
     end
   end
@@ -34,7 +35,7 @@ describe 'gnomish::gnome::gconftool_2' do
       should contain_exec('gconftool-2 /gnomish/rspec').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --set \'/gnomish/rspec\' --type string \'value\'',
         'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /gnomish/rspec 2>&1 )" == "value"',
-        'path'    => '/bin:/sbin:/usr/bin:/usr/sbin',
+        'path'    => '/spec/test:/path',
       })
     end
   end
@@ -84,7 +85,7 @@ describe 'gnomish::gnome::gconftool_2' do
   auto_types.each do |type, values|
     values.each do |value|
       describe "with type on default <auto> and value set to valid <#{value}> (as #{value.class})" do
-        let(:params) { { :value => value } }
+        let(:params) { mandatory_params.merge({ :value => value }) }
 
         it do
           should contain_exec('gconftool-2 /gnomish/rspec').with({
@@ -96,18 +97,6 @@ describe 'gnomish::gnome::gconftool_2' do
   end
 
   describe 'variable type and content validations' do
-    # set needed custom facts and variables
-    let(:facts) do
-      {
-        #:fact => 'value',
-      }
-    end
-    let(:mandatory_params) do
-      {
-        :value => 'value',
-      }
-    end
-
     validations = {
       # shortcuts defaults/mandatory will be accepted and auto converted
       'absolute_path' => {

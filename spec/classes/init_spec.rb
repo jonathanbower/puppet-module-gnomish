@@ -1,5 +1,9 @@
 require 'spec_helper'
 describe 'gnomish' do
+  mandatory_params = {}
+  let(:facts) { mandatory_global_facts }
+  let(:params) { mandatory_params }
+
   describe 'with defaults for all parameters' do
     it { should compile.with_all_deps }
     it { should contain_class('gnomish') }
@@ -11,8 +15,8 @@ describe 'gnomish' do
   end
 
   describe 'with applications set to valid hash' do
-    let :applications_hash do
-      {
+    let(:applications_hash) do
+      mandatory_params.merge({
         :applications => {
           'from_param' => {
             'ensure'           => 'file',
@@ -21,7 +25,7 @@ describe 'gnomish' do
             'entry_icon'       => 'icon',
           }
         }
-      }
+      })
     end
 
     context 'when applications_hiera_merge set to <true> (default)' do
@@ -46,11 +50,11 @@ describe 'gnomish' do
 
   describe 'with desktop set to valid string <gnome> (default)' do
     let(:params) do
-      {
+      mandatory_params.merge({
         :desktop          => 'gnome',
         :wallpaper_path   => '/test/desktop/dst',
         :wallpaper_source => '/test/desktop/src',
-      }
+      })
     end
 
     it { should contain_class('gnomish::gnome') }
@@ -70,11 +74,11 @@ describe 'gnomish' do
 
   describe 'with desktop set to valid string <mate>' do
     let(:params) do
-      {
+      mandatory_params.merge({
         :desktop          => 'mate',
         :wallpaper_path   => '/test/desktop/dst',
         :wallpaper_source => '/test/desktop/src',
-      }
+      })
     end
 
     it { should contain_class('gnomish::mate') }
@@ -93,7 +97,7 @@ describe 'gnomish' do
   end
 
   describe 'with gconf_name set to valid string <$(HOME)/.gconf-rspec>' do
-    let(:params) { { :gconf_name => '$(HOME)/.gconf-rspec' } }
+    let(:params) { mandatory_params.merge({ :gconf_name => '$(HOME)/.gconf-rspec' }) }
 
     it do
       should contain_file_line('set_gconf_name').with({
@@ -106,7 +110,7 @@ describe 'gnomish' do
   end
 
   describe 'with packages_add set to valid array %w(rspec testing)' do
-    let(:params) { { :packages_add => %w(rspec testing) } }
+    let(:params) { mandatory_params.merge({ :packages_add => %w(rspec testing) }) }
 
     %w(rspec testing).each do |package|
       it do
@@ -118,7 +122,7 @@ describe 'gnomish' do
   end
 
   describe 'with packages_remove set to valid array %w(rspec testing)' do
-    let(:params) { { :packages_remove => %w(rspec testing) } }
+    let(:params) { mandatory_params.merge({ :packages_remove => %w(rspec testing) }) }
 
     %w(rspec testing).each do |package|
       it do
@@ -130,14 +134,14 @@ describe 'gnomish' do
   end
 
   describe 'with settings_xml set to valid hash' do
-    let :settings_xml_hash do
-      {
+    let(:settings_xml_hash) do
+      mandatory_params.merge({
        :settings_xml => {
           'from_param' => {
             'value' => 'from_param',
           }
         }
-      }
+     })
     end
 
     context 'when settings_xml_hiera_merge set to <true> (default)' do
@@ -158,7 +162,7 @@ describe 'gnomish' do
   end
 
   describe 'with wallpaper_path set to valid string </usr/share/wallpapers/rspec.png>' do
-    let(:params) { { :wallpaper_path => '/usr/share/wallpapers/rspec.png' } }
+    let(:params) { mandatory_params.merge({ :wallpaper_path => '/usr/share/wallpapers/rspec.png' }) }
     it { should have_gnomish__gnome__gconftool_2_resource_count(1) }
 
     it do
@@ -170,7 +174,7 @@ describe 'gnomish' do
   end
 
   describe 'with wallpaper_source set to valid string </src/rspec.png>' do
-    let(:params) { { :wallpaper_source => '/src/rspec.png' } }
+    let(:params) { mandatory_params.merge({ :wallpaper_source => '/src/rspec.png' }) }
 
     it 'should fail' do
       expect { should contain_class(subject) }.to raise_error(Puppet::Error, /gnomish::wallpaper_path is needed but undefiend\. Please define a valid path/)
@@ -178,10 +182,10 @@ describe 'gnomish' do
 
     context 'when wallpaper_path is set to valid string </dst/rspec.png>' do
       let(:params) do
-        {
+        mandatory_params.merge({
           :wallpaper_source => '/src/rspec.png',
           :wallpaper_path   => '/dst/rspec.png',
-        }
+        })
       end
       it do
         should contain_file('wallpaper').with({
@@ -199,10 +203,10 @@ describe 'gnomish' do
 
   describe 'with hiera providing data from multiple levels' do
     let(:facts) do
-      {
+      mandatory_global_facts.merge({
         :fqdn  => 'gnomish.example.local',
         :class => 'gnomish',
-      }
+      })
     end
 
     context 'with defaults for all parameters' do
@@ -222,7 +226,7 @@ describe 'gnomish' do
     end
 
     context 'with applications_hiera_merge set to valid <false>' do
-      let(:params) { { :applications_hiera_merge => false } }
+      let(:params) { mandatory_params.merge({ :applications_hiera_merge => false }) }
 
       it { should have_gnomish__application_resource_count(3) }
       it { should contain_gnomish__application('from_hiera_fqdn') }
@@ -239,7 +243,7 @@ describe 'gnomish' do
     end
 
     context 'with settings_xml_hiera_merge set to valid <false>' do
-      let(:params) { { :settings_xml_hiera_merge => false } }
+      let(:params) { mandatory_params.merge({ :settings_xml_hiera_merge => false }) }
 
       it { should have_gnomish__application_resource_count(4) }
       it { should contain_gnomish__application('from_hiera_class') }
@@ -257,18 +261,6 @@ describe 'gnomish' do
   end
 
   describe 'variable type and content validations' do
-    # set needed custom facts and variables
-    let(:facts) do
-      {
-        #:fact => 'value',
-      }
-    end
-    let(:mandatory_params) do
-      {
-        #:param => 'value',
-      }
-    end
-
     validations = {
       'absolute_path' => {
         :name    => %w(wallpaper_path),

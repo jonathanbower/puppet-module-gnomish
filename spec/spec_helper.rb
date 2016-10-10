@@ -11,3 +11,9 @@ RSpec.configure do |config|
     Facter.clear_messages
   end
 end
+
+def mandatory_global_facts
+  {
+    :path => '/spec/test:/path',
+  }
+end
