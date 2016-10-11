@@ -21,7 +21,7 @@ describe 'gnomish::gnome::gconftool_2' do
     it do
       should contain_exec('gconftool-2 /gnomish/rspec').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --set \'/gnomish/rspec\' --type string \'testing\'',
-        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --get /gnomish/rspec 2>&1 )" == "testing"',
+        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --get /gnomish/rspec | tail -n1 2>&1 )" == "testing"',
         'path'    => '/spec/test:/path',
       })
     end
@@ -34,7 +34,7 @@ describe 'gnomish::gnome::gconftool_2' do
     it do
       should contain_exec('gconftool-2 /gnomish/rspec').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --set \'/gnomish/rspec\' --type string \'value\'',
-        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /gnomish/rspec 2>&1 )" == "value"',
+        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /gnomish/rspec | tail -n1 2>&1 )" == "value"',
         'path'    => '/spec/test:/path',
       })
     end
@@ -46,7 +46,21 @@ describe 'gnomish::gnome::gconftool_2' do
     it do
       should contain_exec('gconftool-2 /gnomish/rspec').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/rspec/gconf.xml.specific --set \'/gnomish/rspec\' --type string \'value\'',
-        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/rspec/gconf.xml.specific --get /gnomish/rspec 2>&1 )" == "value"',
+        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/rspec/gconf.xml.specific --get /gnomish/rspec | tail -n1 2>&1 )" == "value"',
+      })
+    end
+  end
+
+  describe 'gconf path when running och Suse 10.4' do
+    let :facts do
+      { :osfamily               => 'Suse',
+        :operatingsystemrelease => '10.4',
+      }
+    end
+    it do
+      should contain_exec('gconftool-2 /gnomish/rspec').with({
+        'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/opt/gnome/gconf/gconf.xml.defaults --set \'/gnomish/rspec\' --type string \'value\'',
+        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/opt/gnome/gconf/gconf.xml.defaults --get /gnomish/rspec | tail -n1 2>&1 )" == "value"',
       })
     end
   end
@@ -58,7 +72,7 @@ describe 'gnomish::gnome::gconftool_2' do
     it do
       should contain_exec('gconftool-2 /rspec/testing').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --set \'/rspec/testing\' --type string \'value\'',
-        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --get /rspec/testing 2>&1 )" == "value"',
+        'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --get /rspec/testing | tail -n1 2>&1 )" == "value"',
       })
     end
   end

@@ -39,9 +39,17 @@ define gnomish::gnome::gconftool_2 (
     $type_real = $type
   }
 
+  if "${::osfamily}${::operatingsystemrelease}" =~ /^Suse10/ {
+    $gconf_mandatory_path = '/etc/opt/gnome/gconf/gconf.xml.mandatory'
+    $gconf_defaults_path = '/etc/opt/gnome/gconf/gconf.xml.defaults'
+  } else {
+    $gconf_mandatory_path = '/etc/gconf/gconf.xml.mandatory'
+    $gconf_defaults_path = '/etc/gconf/gconf.xml.defaults'
+  }
+
   $config_real = $config ? {
-    'mandatory' => '/etc/gconf/gconf.xml.mandatory',
-    'defaults'  => '/etc/gconf/gconf.xml.defaults',
+    'mandatory' => $gconf_mandatory_path,
+    'defaults'  => $gconf_defaults_path,
     default     => $config,
   }
 
@@ -57,7 +65,7 @@ define gnomish::gnome::gconftool_2 (
   exec { "gconftool-2 ${key}" :
     command => "gconftool-2 --direct --config-source xml:readwrite:${config_real} --set '${key}' --type ${type_real} '${value_string}'",
     # "2>&1" is needed to catch cases where we want to write an empty string when no value is set (yet)
-    unless  => "test \"$(gconftool-2 --direct --config-source xml:readwrite:${config_real} --get ${key} 2>&1 )\" == \"${value_string}\"",
+    unless  => "test \"$(gconftool-2 --direct --config-source xml:readwrite:${config_real} --get ${key} | tail -n1 2>&1 )\" == \"${value_string}\"",
     path    => $::path,
   }
 }
