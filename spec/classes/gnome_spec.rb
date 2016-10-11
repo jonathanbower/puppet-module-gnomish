@@ -1,5 +1,9 @@
 require 'spec_helper'
 describe 'gnomish::gnome' do
+  mandatory_params = {}
+  let(:facts) { mandatory_global_facts }
+  let(:params) { mandatory_params }
+
   describe 'with defaults for all parameters' do
     it { should compile.with_all_deps }
     it { should contain_class('gnomish::gnome') }
@@ -9,8 +13,8 @@ describe 'gnomish::gnome' do
   end
 
   describe 'with applications set to valid hash' do
-    let :applications_hash do
-      {
+    let(:applications_hash) do
+      mandatory_params.merge({
         :applications => {
           'from_param' => {
             'ensure'           => 'file',
@@ -19,7 +23,7 @@ describe 'gnomish::gnome' do
             'entry_icon'       => 'icon',
           }
         }
-      }
+      })
     end
 
     context 'when applications_hiera_merge set to <true> (default)' do
@@ -43,14 +47,14 @@ describe 'gnomish::gnome' do
   end
 
   describe 'with settings_xml set to valid hash' do
-    let :settings_xml_hash do
-      {
+    let(:settings_xml_hash) do
+      mandatory_params.merge({
        :settings_xml => {
           'from_param' => {
             'value' => 'from_param',
           }
         }
-      }
+      })
     end
 
     context 'when settings_xml_hiera_merge set to <true> (default)' do
@@ -71,8 +75,7 @@ describe 'gnomish::gnome' do
   end
 
   describe 'with system_items_modify set to valid boolean <true>' do
-    let(:params) { { :system_items_modify => true } }
-
+    let(:params) { mandatory_params.merge({ :system_items_modify => true }) }
     it do
       should contain_file('modified system items').with({
         'ensure' => 'file',
@@ -86,10 +89,10 @@ describe 'gnomish::gnome' do
 
     context 'when system_items_path is set to valid </rspec/system-items.xbel>' do
       let(:params) do
-        {
+        mandatory_params.merge({
           :system_items_modify => true,
           :system_items_path   => '/rspec/system-items.xbel',
-        }
+        })
       end
 
       it { should contain_file('modified system items').with_path('/rspec/system-items.xbel') }
@@ -97,10 +100,10 @@ describe 'gnomish::gnome' do
 
     context 'when system_items_source is set to valid <puppet:///modules/gnomish/rspec.xbel.erb>' do
       let(:params) do
-        {
+        mandatory_params.merge({
           :system_items_modify => true,
           :system_items_source => 'puppet:///modules/gnomish/rspec.xbel.erb',
-        }
+        })
       end
 
       it { should contain_file('modified system items').with_source('puppet:///modules/gnomish/rspec.xbel.erb') }
@@ -109,10 +112,10 @@ describe 'gnomish::gnome' do
 
   describe 'with hiera providing data from multiple levels' do
     let(:facts) do
-      {
+      mandatory_global_facts.merge({
         :fqdn  => 'gnomish.example.local',
         :class => 'gnomish',
-      }
+      })
     end
 
     context 'with defaults for all parameters' do
@@ -126,14 +129,14 @@ describe 'gnomish::gnome' do
     end
 
     context 'with applications_hiera_merge set to valid <false>' do
-      let(:params) { { :applications_hiera_merge => false } }
+      let(:params) { mandatory_params.merge({ :applications_hiera_merge => false }) }
 
       it { should have_gnomish__application_resource_count(1) }
       it { should contain_gnomish__application('from_hiera_fqdn_gnome_specific') }
     end
 
     context 'with settings_xml_hiera_merge set to valid <false>' do
-      let(:params) { { :settings_xml_hiera_merge => false } }
+      let(:params) { mandatory_params.merge({ :settings_xml_hiera_merge => false }) }
 
       it { should have_gnomish__gnome__gconftool_2_resource_count(1) }
       it { should contain_gnomish__gnome__gconftool_2('from_hiera_fqdn_gnome_specific') }
@@ -141,18 +144,6 @@ describe 'gnomish::gnome' do
   end
 
   describe 'variable type and content validations' do
-    # set needed custom facts and variables
-    let(:facts) do
-      {
-        #:fact => 'value',
-      }
-    end
-    let(:mandatory_params) do
-      {
-        #:param => 'value',
-      }
-    end
-
     validations = {
       'absolute_path' => {
         :name    => %w(system_items_path),

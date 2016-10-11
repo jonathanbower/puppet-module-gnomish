@@ -1,15 +1,16 @@
 require 'spec_helper'
 describe 'gnomish::application' do
+  mandatory_params = {
+    :entry_categories => 'category',
+    :entry_exec       => 'exec',
+    :entry_icon       => 'icon',
+  }
   let(:title) { 'rspec-title' }
-  let :minimum_params do
-    {
-      :entry_categories => 'category',
-      :entry_exec       => 'exec',
-      :entry_icon       => 'icon',
-    }
-  end
+  let(:facts) { mandatory_global_facts }
+  let(:params) { mandatory_params }
 
   describe 'with defaults for all parameters' do
+  let(:params) { {} }
     it 'should fail' do
       expect { should contain_class(subject) }.to raise_error(Puppet::Error, /(when gnomish::application::ensure is set to <file> entry_categories, entry_exec, entry_icon, entry_name and entry_type needs to have valid values)/)
     end
@@ -35,11 +36,11 @@ describe 'gnomish::application' do
   end
 
   describe 'with path set to valid string </rspec/testing.desktop> and ensure set to <absent>' do
-    let :params  do
-      {
+    let(:params) do
+      mandatory_params.merge({
         :path   => '/rspec/testing.desktop',
         :ensure => 'absent',
-      }
+      })
     end
 
     it do
@@ -76,7 +77,7 @@ describe 'gnomish::application' do
   end
 
   describe 'with minimum parameters set when ensure is set to <file>' do
-    let(:params) { minimum_params }
+    let(:params) { mandatory_params }
 
     content_minimum = <<-END.gsub(/^\s+\|/, '')
       |[Desktop Entry]
@@ -101,20 +102,20 @@ describe 'gnomish::application' do
 
     %w(categories exec icon name type).each do |param|
       context "when entry_#{param} is set to valid string <example>" do
-        let(:params) { minimum_params.merge({ :"entry_#{param}" => 'example' }) }
+        let(:params) { mandatory_params.merge({ :"entry_#{param}" => 'example' }) }
 
         it { should contain_file('desktop_app_rspec-title').with_content(/^#{param.capitalize}=example$/) }
       end
     end
 
     context 'when entry_terminal is set to valid boolean <true>' do
-      let(:params) { minimum_params.merge({ :entry_terminal => true }) }
+      let(:params) { mandatory_params.merge({ :entry_terminal => true }) }
 
       it { should contain_file('desktop_app_rspec-title').with_content(/^Terminal=true$/) }
     end
 
     context 'when entry_lines is set to valid array %w(Comment=example1 Encoding=UTF-8)' do
-      let(:params) { minimum_params.merge({ :entry_lines => %w(Comment=comment Test=test) }) }
+      let(:params) { mandatory_params.merge({ :entry_lines => %w(Comment=comment Test=test) }) }
       content_entry_lines = <<-END.gsub(/^\s+\|/, '')
         |[Desktop Entry]
         |Categories=category
@@ -132,7 +133,7 @@ describe 'gnomish::application' do
 
     %w(Name Icon Exec Categories Type Terminal).each do |setting|
       context "when entry_lines also contains the basic setting #{setting}" do
-        let(:params) { minimum_params.merge({ :entry_lines => ["#{setting}=something"] }) }
+        let(:params) { mandatory_params.merge({ :entry_lines => ["#{setting}=something"] }) }
 
         it 'should fail' do
           expect { should contain_class(subject) }.to raise_error(Puppet::Error, /gnomish::application::entry_lines does contain one of the basic settings\. Please use the specific \$entry_\* parameter instead/)
@@ -142,20 +143,6 @@ describe 'gnomish::application' do
   end
 
   describe 'variable type and content validations' do
-    # set needed custom facts and variables
-    let(:facts) do
-      {
-        #:fact => 'value',
-      }
-    end
-    let(:mandatory_params) do
-      {
-        :entry_categories => 'category',
-        :entry_exec       => 'exec',
-        :entry_icon       => 'icon',
-      }
-    end
-
     validations = {
       'absolute_path' => {
         :name    => %w(path),

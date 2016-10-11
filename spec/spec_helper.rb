@@ -11,3 +11,10 @@ RSpec.configure do |config|
     Facter.clear_messages
   end
 end
+
+def mandatory_global_facts
+  {
+    :class => nil,               # used in hiera
+    :path => '/spec/test:/path', # used in gnomish::gnome::gconftool_2 / gnomish::mate::mateconftool_2
+  }
+end
