@@ -66,6 +66,6 @@ define gnomish::gnome::gconftool_2 (
     command => "gconftool-2 --direct --config-source xml:readwrite:${config_real} --set '${key}' --type ${type_real} '${value_string}'",
     # "2>&1" is needed to catch cases where we want to write an empty string when no value is set (yet)
     unless  => "test \"$(gconftool-2 --direct --config-source xml:readwrite:${config_real} --get ${key} | tail -n1 2>&1 )\" == \"${value_string}\"",
-    path    => $::path,
+    path    => "${::path}:/opt/gnome/bin",
   }
 }

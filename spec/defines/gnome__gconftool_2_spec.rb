@@ -22,7 +22,7 @@ describe 'gnomish::gnome::gconftool_2' do
       should contain_exec('gconftool-2 /gnomish/rspec').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --set \'/gnomish/rspec\' --type string \'testing\'',
         'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.defaults --get /gnomish/rspec | tail -n1 2>&1 )" == "testing"',
-        'path'    => '/spec/test:/path',
+        'path'    => '/spec/test:/path:/opt/gnome/bin',
       })
     end
   end
@@ -35,7 +35,7 @@ describe 'gnomish::gnome::gconftool_2' do
       should contain_exec('gconftool-2 /gnomish/rspec').with({
         'command' => 'gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --set \'/gnomish/rspec\' --type string \'value\'',
         'unless'  => 'test "$(gconftool-2 --direct --config-source xml:readwrite:/etc/gconf/gconf.xml.mandatory --get /gnomish/rspec | tail -n1 2>&1 )" == "value"',
-        'path'    => '/spec/test:/path',
+        'path'    => '/spec/test:/path:/opt/gnome/bin',
       })
     end
   end
